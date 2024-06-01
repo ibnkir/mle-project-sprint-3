@@ -14,7 +14,7 @@ Swagger UI зайти в браузере на  http://127.0.0.1:8081/docs
 
 import uvicorn
 from fastapi import FastAPI, Body
-from fastapi_handler import FastApiHandler
+from .fastapi_handler import FastApiHandler
 
 
 # Создаём приложение FastAPI

@@ -43,7 +43,15 @@
     ```
 
 ### 2. FastAPI микросервис в Docker-контейнере
+docker image build . --tag proj_sprint3:1
+docker image ls
+docker container run --publish 4601:8081 --volume=./models:/price_app/models --env-file .env proj_sprint3:1
 
+
+docker container ps
+http://localhost:4601/docs
+curl http://0.0.0.0:4601/
+docker container ps
 
 ### 3. Запуск сервисов для системы мониторинга
 
