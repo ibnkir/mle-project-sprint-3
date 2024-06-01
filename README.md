@@ -24,9 +24,12 @@
 
 
 ### Структура репозитория:
-- `services/ml_service/` - код FastAPI-приложения
-- `services/models/flats_prices_fitted_pipeline.pkl` - сериализованная обученная регрессионная модель-пайплайн
-с трансформером для генерации новых признаков
+- `services/ml_service/fastapi_app.py` - исходный код FastAPI-приложения,
+- `services/ml_service/fastapi_handler.py` - исходный код обработчика запросов FastAPI-приложения,
+- `services/ml_service/models/flats_prices_fitted_pipeline.pkl` - сериализованный обученный пайплайн 
+с трансформерами для обработки данных и регрессионной catboost-моделью, 
+- `services/ml_service/data/clean_data.csv` - исходные данные, очищенные на предыдущих спринтах,
+для обучения модели (их можно загрузить из БД либо скачать по ссылке, указанной в файле `Instructions.md`)
 - `notebooks/model_preparation.ipynb` - тетрадка Jupyter Notebooks для обучения модели (готовую модель
-можно также скачать по ссылке, приведенной в файле `Instructions.md`)
-- `Instructions.md` - файл с описанием команд для выполнения каждого этапа
+можно также скачать по ссылке, указанной в файле `Instructions.md`),
+- `Instructions.md` - файл с инструкциями для выполнения каждого этапа

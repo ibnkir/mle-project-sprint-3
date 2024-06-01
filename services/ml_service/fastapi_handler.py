@@ -34,20 +34,33 @@ class FastApiHandler:
         try:
             self.pipeline = joblib.load(model_path)
         except Exception as e:
-            print(f"Failed to load model: {e}")
+            print(f"Failed to load model, {e}")
             self.pipeline = None
 
-    def price_predict(self, model_params: dict) -> float:
+    def price_predict(self, model_params: dict) -> dict:
         """Предсказываем цену квартиры.
 
         Args:
             - model_params (dict): Параметры для модели.
 
         Returns:
-            - float: Прогнозная цена.
+            - dict: Словарь с прогнозной ценой.
         """
         model_params_df = pd.DataFrame(model_params, index=[0])
-        return self.pipeline.predict(model_params_df)[0]
+        try:
+            y_pred = self.pipeline.predict(model_params_df)[0]
+            response = {
+                'status': 'OK',
+                "score": y_pred 
+            }
+        except Exception as e:
+            # Если отдельные признаки имеют неверный тип
+            return {
+                'status': 'Error',
+                'message': f"Problem with some features, {e}"
+            }
+        else:
+            return response
 
     def check_required_query_params(self, query_params: dict) -> bool:
         """Проверяем параметры запроса на наличие обязательного набора параметров.
@@ -122,16 +135,13 @@ class FastApiHandler:
             else:
                 model_params = params["model_params"]
                 print("Making prediction...")
-                # Получаем предсказания модели
-                y_pred = self.price_predict(model_params)
-                response = {
-                    'status': 'OK',
-                    "score": y_pred 
-                }
+                # Пытаемся получить предсказание модели
+                response = self.price_predict(model_params)
+                    
         except Exception as e:
             return {
                 'status': 'Error',
-                'message': f'Problem with request: {e}'
+                'message': f'Problem with request, {e}'
             }
         else:
             return response

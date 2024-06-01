@@ -7,12 +7,12 @@
     git clone https://github.com/ibnkir/mle-project-sprint-3.git
     cd mle-project-sprint-3
     ```
-- Загрузить модель по [ссылке](https://disk.yandex.ru/d/H57r_PT4oExSOA) и положить ее в папку 
-`services/ml_service/models/` репозитория либо самостоятельно создать и обучить модель, выполнив все ячейки в ноутбуке `notebooks/model_preparation.ipynb`
+- Загрузить модель по [ссылке](https://disk.yandex.ru/d/Ce6MX9OaWiyOKA) и положить ее в папку 
+`services/ml_service/models/` репозитория. Либо можно ее создать и обучить самостоятельно, выполнив все ячейки в ноутбуке `notebooks/model_preparation.ipynb`. В этом случае понадобятся исходные данные, которые можно загрузить из БД либо скачать по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA).
 
 ### 1. FastAPI микросервис в виртуальном окружение
 - Установить необходимые библиотеки в текущем либо новом виртуальном окружении, 
-выполнив следующие команды в терминале из корневой папки репозитория:
+выполнив следующие команды из корневой папки репозитория:
 
 Установка в текущем окружении:<br>
     ```
@@ -24,11 +24,11 @@
     ```sudo apt-get install python3.10-venv```<br>
     ```python3 -m venv ./venv```<br>
     ```source venv/bin/activate```<br> 
-    ```pip install -r requirements.txt'''
+    ```pip install -r requirements.txt```
 
-- Перейти в подпапку FastAPI-приложения
+- Перейти в папку FastAPI-приложения
    ```
-   cd services/ml_service
+   cd services/ml_service/
    ```
 
 - Запустить сервер uvicorn (если порт 8081 уже занят, то заменить его на другой)
@@ -36,7 +36,7 @@
    uvicorn fastapi_app:app --reload --port 8081 --host 0.0.0.0
    ```
 
-- В браузере ввести адрес 127.0.0.1:8081/docs для выполнения post-запросов
+- В браузере ввести адрес 127.0.0.1:8081/docs для выполнения post-запросов в Swagger UI
 либо выполнить команду в терминале для выполнения простого get-запроса
     ```
     curl 127.0.0.1:8081/
