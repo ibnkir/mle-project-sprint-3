@@ -4,7 +4,7 @@ COPY . ./price_app
 
 WORKDIR price_app
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements_ml_service.txt
 
 EXPOSE ${ML_SERVICE_PORT}
 

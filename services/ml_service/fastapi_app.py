@@ -1,24 +1,29 @@
 """FastAPI-приложение для предсказания цен на квартиры по заданным параметрам.
 
 Для запуска перейти в папку services/ и выполнить команду:
-uvicorn ml_service.fastapi_app:app --reload --port 8081 --host 0.0.0.0
+uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 0.0.0.0
 
 либо, если работа ведется полностью локально:
-uvicorn ml_service.fastapi_app:app --reload --port 8081 --host 127.0.0.1
+uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 127.0.0.1
 
-Если используется другой порт, то заменить 8081 на этот порт.
+Если используется другой порт, то заменить 1702 на этот порт.
 
 Для просмотра документации API и совершения тестовых запросов через 
-Swagger UI перейти в браузере по ссылке  http://127.0.0.1:8081/docs
+Swagger UI перейти в браузере по ссылке  http://127.0.0.1:1702/docs
 """
 
 import uvicorn
 from fastapi import FastAPI, Body
 from .fastapi_handler import FastApiHandler
+from prometheus_fastapi_instrumentator import Instrumentator
 
 
 # Создаём приложение FastAPI
 app = FastAPI()
+
+# Инициализируем и запускаем экпортёр метрик
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
 
 # Создаём обработчик запросов для API
 app.handler = FastApiHandler()
@@ -29,7 +34,7 @@ def read_root():
     return {'message': 'Welcome from the FastAPI'}
 
 
-@app.post("/api/price/") 
+@app.post("/predict") 
 def get_prediction_for_item(
     model_params: dict = Body(
         example={
@@ -65,4 +70,4 @@ def get_prediction_for_item(
 
 
 if __name__ == "__main__":
-    uvicorn.run("fastapi_app:app", host="0.0.0.0", port="8081")
+    uvicorn.run("fastapi_app:app", host="0.0.0.0", port="1702")
