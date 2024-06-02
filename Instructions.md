@@ -9,23 +9,23 @@
     ```
 - Загрузить модель по [ссылке](https://disk.yandex.ru/d/Ce6MX9OaWiyOKA) и положить ее в папку 
 `/services/models/` репозитория. Либо создать и обучить модель самостоятельно, выполнив все ячейки в ноутбуке 
-`/notebooks/model_preparation.ipynb`. В этом случае понадобятся исходные данные, которые можно загрузить из БД либо скачать по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA).
+`/notebooks/model_preparation.ipynb`. В этом случае понадобятся исходные данные, которые можно загрузить из БД также с помощью данного ноутбука или скачать по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA) и положить в папку ```services/data```.
 
 ### 1. FastAPI микросервис в виртуальном окружение
-- Установить необходимые библиотеки либо в текущем, либо в новом виртуальном окружении, 
+- Установить необходимые библиотеки в текущем или новом виртуальном окружении, 
 выполнив следующие команды из корневой папки репозитория:
 
-Установка в текущем окружении:<br>
-    ```
-    pip install -r requirements.txt
-    ```
+    Установка в текущем окружении:<br>
+        ```
+        pip install -r requirements.txt
+        ```
 
-Установка в новом окружении:<br>
-    ```sudo apt-get update```<br>
-    ```sudo apt-get install python3.10-venv```<br>
-    ```python3 -m venv ./venv```<br>
-    ```source venv/bin/activate```<br> 
-    ```pip install -r requirements.txt```
+    Установка в новом окружении:<br>
+        ```sudo apt-get update```<br>
+        ```sudo apt-get install python3.10-venv```<br>
+        ```python3 -m venv ./venv```<br>
+        ```source venv/bin/activate```<br> 
+        ```pip install -r requirements.txt```
 
 - Перейти в папку services/
    ```
@@ -37,7 +37,7 @@
    uvicorn ml_service.fastapi_app:app --reload --port 8081 --host 0.0.0.0
    ```
 
-- В браузере ввести адрес 127.0.0.1:8081/docs для выполнения post-запросов через Swagger UI
+- В браузере ввести адрес http://127.0.0.1:8081/docs для выполнения post-запросов через Swagger UI
 либо выполнить команду в терминале для выполнения простого get-запроса
     ```
     curl 127.0.0.1:8081/
@@ -47,14 +47,14 @@
 Выполнить следующие команды, также находясь в папке `services/` репозитория:
 
 - Собрать образ
-    ```bash
+    ```
     docker image build . --tag proj_sprint3:1
-    '''
+    ```
 - Запустить котейнер 
     ```
     docker container run --publish 4601:8081 --volume=./models:/price_app/models --env-file .env proj_sprint3:1
     ```
-- В браузере ввести адрес 127.0.0.1:4601/docs для выполнения post-запросов через Swagger UI либо выполнить команду в терминале для выполнения простого get-запроса
+- В браузере ввести адрес http://127.0.0.1:4601/docs для выполнения post-запросов через Swagger UI либо выполнить команду в терминале для выполнения простого get-запроса
     ```
     curl 127.0.0.1:4601/
     ```
