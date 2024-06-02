@@ -8,10 +8,11 @@
     cd mle-project-sprint-3
     ```
 - Загрузить модель по [ссылке](https://disk.yandex.ru/d/Ce6MX9OaWiyOKA) и положить ее в папку 
-`services/ml_service/models/` репозитория. Либо можно ее создать и обучить самостоятельно, выполнив все ячейки в ноутбуке `notebooks/model_preparation.ipynb`. В этом случае понадобятся исходные данные, которые можно загрузить из БД либо скачать по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA).
+`/services/models/` репозитория. Либо создать и обучить модель самостоятельно, выполнив все ячейки в ноутбуке 
+`/notebooks/model_preparation.ipynb`. В этом случае понадобятся исходные данные, которые можно загрузить из БД либо скачать по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA).
 
 ### 1. FastAPI микросервис в виртуальном окружение
-- Установить необходимые библиотеки в текущем либо новом виртуальном окружении, 
+- Установить необходимые библиотеки либо в текущем, либо в новом виртуальном окружении, 
 выполнив следующие команды из корневой папки репозитория:
 
 Установка в текущем окружении:<br>
@@ -26,32 +27,58 @@
     ```source venv/bin/activate```<br> 
     ```pip install -r requirements.txt```
 
-- Перейти в папку FastAPI-приложения
+- Перейти в папку services/
    ```
-   cd services/ml_service/
+   cd services
    ```
 
 - Запустить сервер uvicorn (если порт 8081 уже занят, то заменить его на другой)
    ```
-   uvicorn fastapi_app:app --reload --port 8081 --host 0.0.0.0
+   uvicorn ml_service.fastapi_app:app --reload --port 8081 --host 0.0.0.0
    ```
 
-- В браузере ввести адрес 127.0.0.1:8081/docs для выполнения post-запросов в Swagger UI
+- В браузере ввести адрес 127.0.0.1:8081/docs для выполнения post-запросов через Swagger UI
 либо выполнить команду в терминале для выполнения простого get-запроса
     ```
     curl 127.0.0.1:8081/
     ```
 
 ### 2. FastAPI микросервис в Docker-контейнере
-docker image build . --tag proj_sprint3:1
-docker image ls
-docker container run --publish 4601:8081 --volume=./models:/price_app/models --env-file .env proj_sprint3:1
+Выполнить следующие команды, также находясь в папке `services/` репозитория:
 
+- Собрать образ
+    ```bash
+    docker image build . --tag proj_sprint3:1
+    '''
+- Запустить котейнер 
+    ```
+    docker container run --publish 4601:8081 --volume=./models:/price_app/models --env-file .env proj_sprint3:1
+    ```
+- В браузере ввести адрес 127.0.0.1:4601/docs для выполнения post-запросов через Swagger UI либо выполнить команду в терминале для выполнения простого get-запроса
+    ```
+    curl 127.0.0.1:4601/
+    ```
+- По окончании работы необходимо остановить контейнер, а также удалить образ, если он больше не понадобится
 
-docker container ps
-http://localhost:4601/docs
-curl http://0.0.0.0:4601/
-docker container ps
+    Смотрим ID работающего контейнера
+    ```
+    docker container ps
+    ```
+
+    Останавливаем контейнер
+    ```
+    docker container stop <id вашего контейнера>
+    ```
+
+    Смотрим ID образа
+    ```
+    docker image ls
+    ```
+
+    Удаляем образ
+    ```
+    docker rmi -f <id вашего образа>
+    ```
 
 ### 3. Запуск сервисов для системы мониторинга
 

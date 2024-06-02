@@ -160,6 +160,6 @@ cython_debug/
 #.idea/
 
 # KN modifications
-services/ml_service/data/
-services/ml_service/models/
+services/data/
+services/models/
 notebooks/catboost_info

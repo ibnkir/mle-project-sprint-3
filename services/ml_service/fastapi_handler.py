@@ -1,4 +1,8 @@
-"""Класс FastApiHandler для обработки запросов к FastAPI."""
+"""Класс FastApiHandler для обработки запросов к FastAPI.
+
+Чтобы протестировать этот файл без запуска uvicorn, нужно перейти в папку services
+и выполнить команду: python -m ml_service.fastapi_handler
+"""
 
 import numpy as np
 import pandas as pd
@@ -6,7 +10,7 @@ import joblib
 
 
 class FastApiHandler:
-    """Класс FastApiHandler, обрабатывает запросы и возвращает прогнозную цену квартир по заданным параметрам."""
+    """Класс FastApiHandler, обрабатывает запросы и возвращает прогнозные цены квартир по заданным параметрам."""
 
     def __init__(self, model_path="./models/flats_prices_fitted_pipeline.pkl"):
         """Инициализация переменных класса."""
@@ -179,8 +183,8 @@ def main(model_path: str):
 
 if __name__ == "__main__":
     """
-    Делаем тестовый запрос. Чтобы запустить этот тест, нужно перейти в папку services/ml_service/
-    и выполнить команду: python -m fastapi_handler
+    Для вызова main() без запуска uvicron нужно перейти в папку services/
+    и выполнить команду: python -m ml_service.fastapi_handler
     """
     main('./models/flats_prices_fitted_pipeline.pkl')
     

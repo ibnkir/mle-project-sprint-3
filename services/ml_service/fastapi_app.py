@@ -1,15 +1,15 @@
 """FastAPI-приложение для предсказания цен на квартиры по заданным параметрам.
 
-Для запуска перейти в папку services/ml_service/ и выполнить команду:
-uvicorn fastapi_app:app --reload --port 8081 --host 0.0.0.0
+Для запуска перейти в папку services/ и выполнить команду:
+uvicorn ml_service.fastapi_app:app --reload --port 8081 --host 0.0.0.0
 
 либо, если работа ведется полностью локально:
-uvicorn fastapi_app:app --reload --port 8081 --host 127.0.0.1
+uvicorn ml_service.fastapi_app:app --reload --port 8081 --host 127.0.0.1
 
 Если используется другой порт, то заменить 8081 на этот порт.
 
 Для просмотра документации API и совершения тестовых запросов через 
-Swagger UI зайти в браузере на  http://127.0.0.1:8081/docs
+Swagger UI перейти в браузере по ссылке  http://127.0.0.1:8081/docs
 """
 
 import uvicorn
