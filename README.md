@@ -19,14 +19,15 @@
 В папку `services/ml_service/` добавлены файлы `fastapi_app.py` и `fastapi_handler.py` с исходным кодом
 приложения.
 - __Этап 2. Контейнеризация микросервиса__<br>
-В папку `services/` добавлен файл `Dockerfile` для сборки образа приложения.
+В папку `services/` добавлены конфигурационные докер-файлы 
+`Dockerfile_ml_service` и `docker-compose.yaml`.
 - __Этап 3. Запуск сервисов для системы мониторинга__<br>
 - __Этап 4. Построение дашборда для мониторинга__<br>
 
 
 #### Структура репозитория:
 - `services/ml_service/fastapi_app.py` - исходный код для создания FastAPI-приложения,
-- `services/ml_service/fastapi_handler.py` - исходный код для обработки запросов FastAPI-приложения,
+- `services/ml_service/fastapi_handler.py` - исходный код для обработки запросов к сервису,
 - `services/models/flats_prices_fitted_pipeline.pkl` - сериализованный обученный пайплайн 
 с трансформерами данных и регрессионной catboost-моделью, 
 - `services/data/clean_data.csv` - исходные данные, очищенные на предыдущих спринтах,

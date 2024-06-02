@@ -1,0 +1,10 @@
+services:
+  ml_service:  
+    env_file:
+      - ./.env
+    
+    build:
+      dockerfile: Dockerfile_ml_service
+
+    ports:
+      - "${ML_SERVICE_PORT_VM}:${ML_SERVICE_PORT}"
