@@ -7,7 +7,7 @@
     git clone https://github.com/ibnkir/mle-project-sprint-3.git
     cd mle-project-sprint-3
     ```
-- Загрузить модель по [ссылке](https://disk.yandex.ru/d/Ce6MX9OaWiyOKA) и положить ее в папку 
+- Загрузить модель по [ссылке](https://disk.yandex.ru/d/Ce6MX9OaWiyOKA) и положить в папку 
 `/services/models/` репозитория. Либо создать и обучить модель самостоятельно, выполнив все ячейки в ноутбуке 
 `/notebooks/model_preparation.ipynb`. В этом случае понадобятся исходные данные, которые можно загрузить из БД также с помощью данного ноутбука или скачать по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA) и положить в папку ```services/data```.
 
