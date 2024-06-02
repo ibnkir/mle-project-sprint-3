@@ -30,9 +30,9 @@
 - `services/ml_service/fastapi_handler.py` - исходный код для обработки запросов к сервису,
 - `services/models/flats_prices_fitted_pipeline.pkl` - сериализованный обученный пайплайн 
 с трансформерами данных и регрессионной catboost-моделью
-(его можно скачать по ссылке, указанной в файле `Instructions.md`,
+(его можно скачать по ссылке, приведенной в файле `Instructions.md`,
 либо создать и обучить самостоятельно с помощью указанного ниже ноутбука), 
 - `services/data/clean_data.csv` - исходные данные, очищенные на предыдущих спринтах,
 для обучения модели (их можно загрузить из БД либо скачать по ссылке, указанной в файле `Instructions.md`)
-- `notebooks/model_preparation.ipynb` - тетрадка Jupyter Notebooks для обучения модели,
-- `Instructions.md` - файл с инструкциями для выполнения каждого этапа.
+- `notebooks/model_preparation.ipynb` - тетрадка Jupyter Notebooks для скачивания данных и обучения модели,
+- `Instructions.md` - файл с инструкциями для каждого этапа.
