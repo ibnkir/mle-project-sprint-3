@@ -16,17 +16,30 @@ import uvicorn
 from fastapi import FastAPI, Body
 from .fastapi_handler import FastApiHandler
 from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_client import (
+    Histogram,
+    Counter
+)
 
 
 # Создаём приложение FastAPI
 app = FastAPI()
 
+# Создаём обработчик запросов для API
+app.handler = FastApiHandler()
+
 # Инициализируем и запускаем экпортёр метрик
 instrumentator = Instrumentator()
 instrumentator.instrument(app).expose(app)
 
-# Создаём обработчик запросов для API
-app.handler = FastApiHandler()
+ml_service_predictions = Histogram(
+    # имя метрики
+    "ml_service_predictions",
+    #описание метрики
+    "Histogram of predictions",
+    #указаываем корзины для гистограммы
+    buckets=(0.5e7, 1.0e7, 1.5e7, 2.0e7)
+)
 
 
 @app.get("/")
@@ -66,7 +79,13 @@ def get_prediction_for_item(
     all_params = {
         "model_params": model_params
     }  
-    return app.handler.handle(all_params)
+    
+    response = app.handler.handle(all_params)
+    
+    if 'status' in response and response['status'] == 'OK':
+        ml_service_predictions.observe(response['score'])
+
+    return response
 
 
 if __name__ == "__main__":
