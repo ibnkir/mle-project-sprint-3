@@ -1,9 +1,8 @@
 """FastAPI-приложение для предсказания цен на квартиры по заданным параметрам.
 
-Для запуска перейти в папку services/ и выполнить команду:
+Для запуска без докера перейти в папку services/ и выполнить команду:
 uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 0.0.0.0
-
-либо, если работа ведется полностью локально:
+либо, если работа ведется локально:
 uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 127.0.0.1
 
 Если используется другой порт, то заменить 1702 на этот порт.
@@ -32,13 +31,17 @@ app.handler = FastApiHandler()
 instrumentator = Instrumentator()
 instrumentator.instrument(app).expose(app)
 
+# Метрика-гистограмма с предсказаниями модели
 ml_service_predictions = Histogram(
-    # имя метрики
     "ml_service_predictions",
-    #описание метрики
     "Histogram of predictions",
-    #указаываем корзины для гистограммы
     buckets=(0.5e7, 1.0e7, 1.5e7, 2.0e7)
+)
+
+# Метрика-счетчик запросов с неправильными параметрами
+ml_service_err_requests = Counter(
+    "ml_service_err_requests", 
+    "Counter of requests with wrong parameters"
 )
 
 
@@ -57,7 +60,7 @@ def get_prediction_for_item(
             'rooms': 2,
             'is_apartment': False,
             'total_area': 50.0,
-            'building_age': 2024 - 1979,
+            'build_year': 1979,
             'building_type_int': 4,
             'latitude': 60.0,
             'longitude': 40.0,
@@ -68,13 +71,10 @@ def get_prediction_for_item(
         } 
     )                                                   
 ):
-    """Функция для предсказания цен на квартиры по заданным параметрам.
-
-    Args:
-        - params (dict): Параметры пользователя.
-
-    Returns:
-        - dict: Предсказание модели в формате JSON {"score":y_pred}
+    """Функция для получения и обработки запроса к предсказательному сервису ml_service.
+    Args:<br>
+        - params (dict): Параметры запроса.
+    Returns: ответ в формате JSON с предсказанием цены в поле 'score'.
     """
     all_params = {
         "model_params": model_params
@@ -84,9 +84,12 @@ def get_prediction_for_item(
     
     if 'status' in response and response['status'] == 'OK':
         ml_service_predictions.observe(response['score'])
+    else:
+        ml_service_err_requests.inc()
 
     return response
 
 
 if __name__ == "__main__":
     uvicorn.run("fastapi_app:app", host="0.0.0.0", port="1702")
+    

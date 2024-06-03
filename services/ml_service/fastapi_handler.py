@@ -1,37 +1,53 @@
-"""Класс FastApiHandler для обработки запросов к FastAPI.
+"""Класс FastApiHandler для обработки запросов к FastAPI-сервису предсказания цен на квартиры.
 
-Чтобы протестировать этот файл без запуска uvicorn, нужно перейти в папку services
+Чтобы протестировать этот файл без запуска uvicorn, нужно перейти в папку services/
 и выполнить команду: python -m ml_service.fastapi_handler
+См. ниже функцию main()
 """
 
 import numpy as np
 import pandas as pd
 import joblib
+from datetime import datetime
 
 
 class FastApiHandler:
-    """Класс FastApiHandler, обрабатывает запросы и возвращает прогнозные цены квартир по заданным параметрам."""
+    """Класс FastApiHandler для обработки запросов к FastAPI-сервису предсказания цен на квартиры."""
 
     def __init__(self, model_path="./models/flats_prices_fitted_pipeline.pkl"):
-        """Инициализация переменных класса."""
+        """Метод для инициализации переменных класса."""
 
         # Типы параметров запроса для проверки
         self.param_types = {
             "model_params": dict
         }
 
-        # Список необходимых параметров модели 
-        self.required_model_params = [
-            'floor', 'kitchen_area', 'living_area', 'rooms', 'is_apartment',
-            'total_area', 'building_age', 'building_type_int', 
-            'latitude', 'longitude', 'ceiling_height',
-            'flats_count', 'floors_total', 'has_elevator'
-        ]
+        # Словарь со всеми обязательными параметрами модели и допустимыми типами их значений
+        self.required_model_params = {
+            'floor':[int], 
+            'kitchen_area':[float, int], 
+            'living_area': [float, int], 
+            'rooms': [int], 
+            'is_apartment': [bool],
+            'total_area': [float, int], 
+            'build_year': [int], 
+            'building_type_int': [int], 
+            'latitude': [float, int], 
+            'longitude': [float, int], 
+            'ceiling_height': [float, int],
+            'flats_count': [int], 
+            'floors_total': [int], 
+            'has_elevator': [bool]
+        }
 
+        # Описание ошибки
+        self.err_msg = ''
+
+        # Загружаем обученную ценовую модель
         self.load_price_model(model_path=model_path)
         
     def load_price_model(self, model_path: str):
-        """Загружаем обученную модель предсказания цен на квартиры.
+        """Метод для загрузки обученной ценовой модели.
         Args:
             - model_path (str): Путь до модели.
         """
@@ -41,87 +57,102 @@ class FastApiHandler:
             print(f"Failed to load model, {e}")
             self.pipeline = None
 
-    def price_predict(self, model_params: dict) -> dict:
-        """Предсказываем цену квартиры.
-
+    def price_predict(self, model_params: dict) -> float:
+        """Метод для получения прогнозной цены (параметры модели должны проверяться до вызова этого метода).
         Args:
-            - model_params (dict): Параметры для модели.
-
-        Returns:
-            - dict: Словарь с прогнозной ценой.
+            - model_params (dict): Параметры модели.
+        Returns: Прогнозная цена (float).
         """
-        model_params_df = pd.DataFrame(model_params, index=[0])
-        try:
-            y_pred = self.pipeline.predict(model_params_df)[0]
-            response = {
-                'status': 'OK',
-                "score": y_pred 
-            }
-        except Exception as e:
-            # Если отдельные признаки имеют неверный тип
-            return {
-                'status': 'Error',
-                'message': f"Problem with some features, {e}"
-            }
-        else:
-            return response
-
+        # Считаем возраст здания, т.к. наша модель ожидает этот параметр вместо года постройки
+        model_params['building_age'] = datetime.now().year - model_params['build_year']
+        # Удаляем лишний параметр
+        del model_params['build_year']
+        # Преобразуем в датафрейм
+        model_params_df = pd.DataFrame(model_params, index=[0])        
+        return self.pipeline.predict(model_params_df)[0]
+        
     def check_required_query_params(self, query_params: dict) -> bool:
-        """Проверяем параметры запроса на наличие обязательного набора параметров.
-
+        """Метод для проверки параметров запроса.
         Args:
             - query_params (dict): Параметры запроса.
-
-        Returns:
-            - bool: True - если есть нужные параметры, False - иначе
+        Returns: True, если есть нужные параметры, иначе False .
         """
-        if "model_params" not in query_params:
+        if 'model_params' not in query_params \
+            or not isinstance(query_params["model_params"], self.param_types['model_params']):
+            self.err_msg = "Not all query params exist"
+            print(self.err_msg)
             return False
                 
-        if not isinstance(query_params["model_params"], self.param_types["model_params"]):
-            return False
-        
         return True
     
     def check_required_model_params(self, model_params: dict) -> bool:
-        """Проверяем параметры пользователя на наличие обязательного набора признаков.
+        """Метод для проверки параметров модели.
         Args:
-            - model_params (dict): Параметры пользователя для предсказания.
-        Returns:
-            - bool: True - если есть нужные параметры, False - иначе
+            - model_params (dict): Параметры модели.
+        Returns: True, если есть все требуемые параметры, их типы соответствуют заданным и 
+        выполнены предусмотренные ограничения, иначе False.
         """
-        if set(model_params.keys()) == set(self.required_model_params):
-            return True
-        return False
+        # Этот признак мы не использовали при обучении модели
+        if 'studio' in model_params:
+            del model_params['studio']
+        
+        # Проверяем наличие всех требуемых параметров модели
+        if model_params.keys() != self.required_model_params.keys():
+            self.err_msg = "There are missing or extra model params"
+            print(self.err_msg)
+            return False
+               
+        # Проверяем, что типы значений соответствуют заданным и все числовые параметры положительны
+        for k, v in model_params.items():
+            if not type(v) in self.required_model_params[k]:
+                self.err_msg = 'Some features in model params have wrong value type'
+                print(self.err_msg)
+                return False
+            elif type(v) in [float, int] and k != 'building_type_int' and v <= 0:
+                self.err_msg = 'Some numerical features in model params are zero or negative'
+                print(self.err_msg)
+                return False
+            
+        # Проверяем, что год постройки не превышает текущий год
+        if model_params['build_year'] > datetime.now().year:
+            self.err_msg = "Parameter build_year should be less or equal than current year"
+            print(self.err_msg)
+            return False
+        
+        # Проверяем, что тип здания лежит в диапазоне [0..6]
+        # (в обучающей выборке были только такие значения)
+        if model_params['building_type_int'] < 0 or model_params['building_type_int'] > 6:
+            self.err_msg = "Parameter building_type_int should be in the range [0..6]"
+            print(self.err_msg)
+            return False
+
+        return True
     
     def validate_params(self, params: dict) -> bool:
-        """Разбираем запрос и проверяем его корректность.
-
+        """Проверяем наличие и корректность всех параметров.
         Args:
-            - params (dict): Словарь параметров запроса.
-            
-        Returns:
-            - dict: Cловарь со всеми параметрами запроса.
+            - params (dict): Параметры запроса.
+        Returns: True, если все параметры корректны, иначе False.
         """
+        # Проверяем параметры запроса
         if self.check_required_query_params(params):
             print("All query params exist")
         else:
-            print("Not all query params exist")
             return False
         
-        if self.check_required_model_params(params["model_params"]):
-            print("All model params exist")
-        else:
-            print("Not all model params exist")
-            return False
-        return True
+        # Проверяем параметры модели
+        if self.check_required_model_params(params['model_params']):
+            print("All model params exist and correct")
+            return True
+        
+        return False
 		
     def handle(self, params):
         """Функция для обработки FastAPI-запросов.
         Args:
-            - params (dict): Словарь параметров запроса.
+            - params (dict): Параметры запроса.
         Returns:
-            - dict: Словарь, содержащий результат выполнения запроса.
+            - Словарь с результатами выполнения запроса.
         """
         try:
             # Проверяем, была ли загружена модель
@@ -130,17 +161,20 @@ class FastApiHandler:
                     'status': 'Error',
                     'message': "Model not found"
                 }
-            # Валидируем запрос к API
+            # Валидируем запрос
             elif not self.validate_params(params):
                 response = {
                     'status': 'Error',
-                    'message': "Problem with parameters"
+                    'message': self.err_msg
                 }
             else:
                 model_params = params["model_params"]
                 print("Making prediction...")
-                # Пытаемся получить предсказание модели
-                response = self.price_predict(model_params)
+                y_pred = self.price_predict(model_params)
+                response = {
+                    'status': 'OK',
+                    'score': y_pred 
+                }
                     
         except Exception as e:
             return {
@@ -161,7 +195,7 @@ def main(model_path: str):
             'rooms': 2,
             'is_apartment': False,
             'total_area': 50.0,
-            'building_age': 2024 - 1979,
+            'build_year': 1979,
             'building_type_int': 4,
             'latitude': 60.0,
             'longitude': 40.0,
@@ -176,7 +210,7 @@ def main(model_path: str):
     handler = FastApiHandler(model_path)
 
     # Делаем тестовый запрос
-    #print(f"Searching {test_params['questions_num']} similar questions for text:\n{test_params['user_text']}\n")
+    print('Processing request...')
     response = handler.handle(test_params)
     print(f"Response: {response}")
 
@@ -187,5 +221,6 @@ if __name__ == "__main__":
     и выполнить команду: python -m ml_service.fastapi_handler
     """
     main('./models/flats_prices_fitted_pipeline.pkl')
+    
     
     
