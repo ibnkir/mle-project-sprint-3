@@ -108,8 +108,8 @@ class FastApiHandler:
                 self.err_msg = 'Some features in model params have wrong value type'
                 print(self.err_msg)
                 return False
-            elif type(v) in [float, int] and k != 'building_type_int' and v <= 0:
-                self.err_msg = 'Some numerical features in model params are zero or negative'
+            elif type(v) in [float, int] and k != 'building_type_int' and v < 0:
+                self.err_msg = 'Some numerical features in model params are negative'
                 print(self.err_msg)
                 return False
             
