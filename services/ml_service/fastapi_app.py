@@ -2,6 +2,7 @@
 
 Для запуска без докера перейти в папку services/ и выполнить команду:
 uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 0.0.0.0
+
 либо, если работа ведется локально:
 uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 127.0.0.1
 
@@ -74,12 +75,14 @@ def get_prediction_for_item(
     """Функция для получения и обработки запроса к предсказательному сервису ml_service.<br>
     Args:<br>
         - params (dict): Параметры запроса.<br>
-    Returns: ответ в формате JSON с предсказанием цены в поле 'score'.
+    Returns: ответ в формате JSON с предсказанием цены в поле 'score' 
+    либо описанием ошибки в поле 'message'.
     """
     all_params = {
         "model_params": model_params
     }  
     
+    print('Processing request...')
     response = app.handler.handle(all_params)
     
     if 'status' in response and response['status'] == 'OK':
@@ -88,8 +91,3 @@ def get_prediction_for_item(
         ml_service_err_requests.inc()
 
     return response
-
-
-if __name__ == "__main__":
-    uvicorn.run("fastapi_app:app", host="0.0.0.0", port="1702")
-    
