@@ -94,7 +94,7 @@
 - Swagger UI для тестирования основного сервиса предсказаний: http://localhost:1702/docs
 - Собираемые метрики основного сервиса: http://localhost:1702/metrics
 - Информация обо всех сборщиках: http://localhost:9090/targets
-- UI для выполнения PromQL-запросов: http://localhost:9090
+- Prometheus UI для выполнения PromQL-запросов: http://localhost:9090
 - Сервис Grafana: http://localhost:3000
 
 Логин и пароль для входа в Grafana должны быть прописаны в файле .env как переменные с именами 
