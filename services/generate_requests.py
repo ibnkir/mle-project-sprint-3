@@ -47,13 +47,6 @@ for cnt, idx in enumerate(selected_inds):
     model_params_df = clean_data.loc[clean_data.index==idx, required_model_params]
     model_params_dict = model_params_df.to_dict(orient='records')[0]
     
-    # У каждого 5-го примера увеличим площадь и кол-во комнат в 10 раз, 
-    # чтобы получить цену в высоком диапазоне
-    if cnt % 5 == 0:
-        model_params_dict['living_area'] *= 10
-        model_params_dict['total_area'] *= 10
-        model_params_dict['rooms'] *= 10
-
     try:
         print(f"Sending correct request {cnt + 1}/{CORR_REQ_NUM}...")
         response = requests.post(url='http://localhost:1702/predict', json=model_params_dict)  
