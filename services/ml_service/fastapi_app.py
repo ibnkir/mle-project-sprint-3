@@ -10,6 +10,8 @@ uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 127.0.0.1
 
 Для просмотра документации API и совершения тестовых запросов через 
 Swagger UI перейти в браузере по ссылке  http://127.0.0.1:1702/docs
+Для отправки простого get-запроса можно ввести в терминале команду
+curl http://127.0.0.1:1702/
 """
 
 import uvicorn
@@ -36,7 +38,7 @@ instrumentator.instrument(app).expose(app)
 ml_service_predictions = Histogram(
     "ml_service_predictions",
     "Histogram of predictions",
-    buckets=(0.5e7, 1.0e7, 1.5e7, 2.0e7)
+    buckets=(0.8e7, 0.9e7, 1.0e7, 1.5e7)
 )
 
 # Метрика-счетчик запросов с неправильными параметрами
