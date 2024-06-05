@@ -15,17 +15,17 @@
       }
     ]
   },
-  "description": "mle-project-sprint-3",
+  "description": "Yandex Practicum",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 5,
   "links": [],
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adntonbrsbmrkb"
+        "uid": "adnwapqrtkuf4f"
       },
       "fieldConfig": {
         "defaults": {
@@ -79,32 +79,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "{instance=\"ml_service:1702\", job=\"scrapping-main-app\"}"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -130,7 +105,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adntonbrsbmrkb"
+            "uid": "adnwapqrtkuf4f"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.05, ml_service_predictions_bucket)",
@@ -142,7 +117,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adntonbrsbmrkb"
+            "uid": "adnwapqrtkuf4f"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.5, ml_service_predictions_bucket)",
@@ -155,7 +130,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adntonbrsbmrkb"
+            "uid": "adnwapqrtkuf4f"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.95, ml_service_predictions_bucket)",
@@ -166,13 +141,13 @@
           "refId": "C"
         }
       ],
-      "title": "Квантили предсказаний",
+      "title": "Квантили предсказаний модели",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adntonbrsbmrkb"
+        "uid": "adnwapqrtkuf4f"
       },
       "fieldConfig": {
         "defaults": {
@@ -234,7 +209,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 3,
+      "id": 2,
       "options": {
         "legend": {
           "calcs": [],
@@ -252,23 +227,23 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adntonbrsbmrkb"
+            "uid": "adnwapqrtkuf4f"
           },
           "editorMode": "code",
-          "expr": "rate(http_request_duration_seconds_count{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"}[1m])",
+          "expr": "ml_service_err_requests_total",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Кол-во запросов в секунду",
+      "title": "Количество запросов с неправильными параметрами",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adntonbrsbmrkb"
+        "uid": "adnwapqrtkuf4f"
       },
       "fieldConfig": {
         "defaults": {
@@ -322,23 +297,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "{instance=\"ml_service:1702\", job=\"scrapping-main-app\"}"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -346,7 +305,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 2,
+      "id": 3,
       "options": {
         "legend": {
           "calcs": [],
@@ -364,24 +323,188 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adntonbrsbmrkb"
+            "uid": "adnwapqrtkuf4f"
           },
           "editorMode": "code",
-          "expr": "increase(ml_service_err_requests_total[1m])",
-          "hide": false,
+          "expr": "rate(http_request_duration_seconds_count{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"}[1m])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
-      "title": "Изменение кол-ва запросов с неправильными параметрами",
+      "title": "Количество запросов в секунду (трафик)",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adntonbrsbmrkb"
+        "uid": "adnwapqrtkuf4f"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "adnwapqrtkuf4f"
+          },
+          "editorMode": "code",
+          "expr": "http_request_duration_seconds_sum{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"} / http_request_duration_seconds_count{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"}",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Среднее время обработки одного запроса (задержка)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "adnwapqrtkuf4f"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "adnwapqrtkuf4f"
+          },
+          "editorMode": "code",
+          "expr": "process_cpu_seconds_total",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Использование CPU",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "adnwapqrtkuf4f"
       },
       "fieldConfig": {
         "defaults": {
@@ -410,9 +533,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 16
       },
-      "id": 4,
+      "id": 6,
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
@@ -433,35 +556,37 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adntonbrsbmrkb"
+            "uid": "adnwapqrtkuf4f"
           },
           "editorMode": "code",
           "expr": "process_virtual_memory_bytes",
-          "hide": false,
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
-      "title": "Потребление RAM",
+      "title": "Использование RAM",
       "type": "gauge"
     }
   ],
+  "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "mle"
+  ],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
-  "title": "mle_service_dashboard",
-  "uid": "ddntuhx1x1af4e",
+  "title": "mle-project-sprint-3",
+  "uid": "cdnwczjz94jcwb",
   "version": 1,
   "weekStart": ""
 }
