@@ -2,7 +2,7 @@
 
 ### 0. Подготовка репозитория
 - Перейти в домашнюю папку и склонировать репозиторий:
-    ```bash
+    ```
     cd ~
     git clone https://github.com/ibnkir/mle-project-sprint-3.git
     ```
@@ -30,16 +30,14 @@
         sudo apt-get update
         sudo apt-get install python3.10-venv
         python3 -m venv ./venv
-        
         source venv/bin/activate
-        
         pip install -r requirements.txt
         ```
 
 - Перейти на терминале в папку `services/`
     
 - Запустить сервер uvicorn:
-   ```bash
+   ```
    uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 0.0.0.0
    ```
 
@@ -55,13 +53,14 @@
 - Собрать и запустить контейнер одним из двух способов:
 
     - Без использования Docker Compose:<br>
-    ```bash
+    ```
     docker image build . --file Dockerfile_ml_service --tag proj_sprint3:ml_service
+    
     docker container run --name ml_service --publish 4601:1702 --volume=./models:/price_app/models --env-file .env proj_sprint3:ml_service
     ```
 
     - С использованием Docker Compose:<br>
-    ```bash
+    ```
     docker compose up --build
     ```
 
@@ -126,12 +125,12 @@
 - Перейти в папку `services/`
 
 - Собрать и запустить контейнер в режиме Docker Compose
-(если образ был уже создан и сохранен, то параметр `--build` можно опустить):<br>
+(если образ был уже создан и сохранен, то параметр `--build` можно опустить):
     ```docker compose up --build```
     
     После выполнения этой команды может возникнуть необходимость вручную удалить и снова добавить порт 9090 для сервиса Prometheus на вкладке перенаправления портов.
 
-- Запустить один или несколько раз скрипт для генерации запросов:<br>
+- Запустить один или несколько раз скрипт для генерации запросов:
     ```python generate_requests.py```
     
 - Перейти на страницу сервиса Grafana по ссылке http://localhost:3000, 
