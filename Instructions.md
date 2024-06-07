@@ -21,14 +21,22 @@
 - Установить необходимые библиотеки одним из двух способов:
 
     - Установка библиотек в текущем окружении:<br>
-        `pip install -r requirements.txt`
+        ```
+        pip install -r requirements.txt
+        ```
 
     - Установка библиотек в новом окружении:<br>
-        `sudo apt-get update`<br>
-        `sudo apt-get install python3.10-venv`<br>
-        `python3 -m venv ./venv`<br>
-        `source venv/bin/activate`<br> 
-        `pip install -r requirements.txt`
+        ```
+        sudo apt-get update
+        
+        sudo apt-get install python3.10-venv
+        
+        python3 -m venv ./venv
+        
+        source venv/bin/activate
+        
+        pip install -r requirements.txt
+        ```
 
 - Перейти на терминале в папку `services/`
     
@@ -100,7 +108,9 @@
 
 - Собрать и запустить контейнер в режиме Docker Compose 
 (если образ был уже создан и сохранен, то параметр `--build` можно опустить):<br>
-    ```docker compose up --build```
+    ```
+    docker compose up --build
+    ```
     
     После выполнения этой команды может возникнуть необходимость вручную удалить и снова добавить порт 9090 для сервиса Prometheus на вкладке перенаправления портов.
 
