@@ -28,9 +28,7 @@
     - Установка библиотек в новом окружении:<br>
         ```
         sudo apt-get update
-        
         sudo apt-get install python3.10-venv
-        
         python3 -m venv ./venv
         
         source venv/bin/activate
@@ -59,7 +57,6 @@
     - Без использования Docker Compose:<br>
     ```bash
     docker image build . --file Dockerfile_ml_service --tag proj_sprint3:ml_service
-    
     docker container run --name ml_service --publish 4601:1702 --volume=./models:/price_app/models --env-file .env proj_sprint3:ml_service
     ```
 
