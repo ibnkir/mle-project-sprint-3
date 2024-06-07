@@ -37,15 +37,18 @@
 - Перейти на терминале в папку `services/`
     
 - Запустить сервер uvicorn:
-   ```
-   uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 0.0.0.0
-   ```
+    ```
+    uvicorn ml_service.fastapi_app:app --reload --port 1702 --host 0.0.0.0
+    ```
 
 - В браузере ввести адрес http://127.0.0.1:1702/docs для отправки запросов через Swagger UI
 (при выборе post-запроса и нажатии на кнопку `Try it out` появится готовый тестовый пример с правильными параметрами) либо выполнить в терминале команду `curl 127.0.0.1:1702/` для отправки простого get-запроса.
 
 - Если приложение запускалось в специально созданном виртуальном окружении, 
-то по окончании работы его можно деактивировать командой `deactivate`
+то по окончании работы его можно деактивировать командой 
+    ```
+    deactivate
+    ```
 
 ### 2. FastAPI-микросервис в Docker-контейнере
 - Перейти на терминале в папку `services/`
@@ -55,7 +58,6 @@
     - Без использования Docker Compose:<br>
     ```
     docker image build . --file Dockerfile_ml_service --tag proj_sprint3:ml_service
-    
     docker container run --name ml_service --publish 4601:1702 --volume=./models:/price_app/models --env-file .env proj_sprint3:ml_service
     ```
 
@@ -140,8 +142,8 @@
 - Перейти на страницу сервиса Grafana по ссылке http://localhost:3000, 
 авторизоваться с логином и паролем, прописанными в файле `services/.env`,
 после этого в левой панели в разделе `Connections->Data sources` выбрать источник данных Prometheus,
-нажать кнопку `Add new data source` справа, 
-чуть ниже ввести его url в сети Docker: `http://prometheus:9090`
+справа нажать кнопку `Add new data source`, 
+чуть ниже ввести его url: `http://prometheus:9090`
 и в самом низу страницы нажать кнопку `Save&test`
 
 - Загрузить json-файл `dashboard.json` со схемой дашборда, для этого в левой
