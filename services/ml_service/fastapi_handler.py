@@ -2,6 +2,7 @@
 
 Чтобы протестировать этот файл без запуска uvicorn, нужно перейти в папку services/
 и выполнить любую из двух команд: 
+
 python -m ml_service.fastapi_handler
 или
 python ml_service/fastapi_handler.py
