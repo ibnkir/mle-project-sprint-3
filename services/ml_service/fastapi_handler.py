@@ -32,7 +32,7 @@ class FastApiHandler:
             'kitchen_area':[float, int], 
             'living_area': [float, int], 
             'rooms': [int], 
-            'is_apartment': [bool],
+            'is_apartment': [bool, int],
             'total_area': [float, int], 
             'build_year': [int], 
             'building_type_int': [int], 
@@ -41,7 +41,7 @@ class FastApiHandler:
             'ceiling_height': [float, int],
             'flats_count': [int], 
             'floors_total': [int], 
-            'has_elevator': [bool]
+            'has_elevator': [bool, int]
         }
 
         # Описание ошибки
@@ -108,11 +108,17 @@ class FastApiHandler:
                
         # Проверяем, что типы значений соответствуют заданным и все числовые параметры положительны
         for k, v in model_params.items():
+            # Проверяем типы значений
             if not type(v) in self.required_model_params[k]:
                 self.err_msg = 'Some features in model params have wrong value type'
                 print(self.err_msg)
                 return False
-            elif type(v) in [float, int] and k != 'building_type_int' and v < 0:
+            # Проверяем булевские параметры, если они переданы как int
+            elif type(v) == int and k in {'is_apartment', 'has_elevator'} and v not in {0, 1}:
+                self.err_msg = 'Features is_apartment and has_elevator should be boolean or 0/1'
+                print(self.err_msg)
+                return False
+            elif type(v) in {float, int} and k != 'building_type_int' and v < 0:
                 self.err_msg = 'Some numerical features in model params are negative'
                 print(self.err_msg)
                 return False
