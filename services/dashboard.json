@@ -19,13 +19,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 4,
   "links": [],
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adnwapqrtkuf4f"
+        "uid": "fdo587ddbn9q8b"
       },
       "fieldConfig": {
         "defaults": {
@@ -105,7 +105,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.05, ml_service_predictions_bucket)",
@@ -117,7 +117,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.5, ml_service_predictions_bucket)",
@@ -130,7 +130,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "histogram_quantile(0.95, ml_service_predictions_bucket)",
@@ -147,7 +147,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adnwapqrtkuf4f"
+        "uid": "fdo587ddbn9q8b"
       },
       "fieldConfig": {
         "defaults": {
@@ -227,7 +227,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "ml_service_err_requests_total",
@@ -243,7 +243,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adnwapqrtkuf4f"
+        "uid": "fdo587ddbn9q8b"
       },
       "fieldConfig": {
         "defaults": {
@@ -323,7 +323,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "rate(http_request_duration_seconds_count{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"}[1m])",
@@ -339,7 +339,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adnwapqrtkuf4f"
+        "uid": "fdo587ddbn9q8b"
       },
       "fieldConfig": {
         "defaults": {
@@ -420,7 +420,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "http_request_duration_seconds_sum{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"} / http_request_duration_seconds_count{handler='/predict', instance=\"ml_service:1702\", job=\"scrapping-main-app\", method=\"POST\"}",
@@ -436,7 +436,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adnwapqrtkuf4f"
+        "uid": "fdo587ddbn9q8b"
       },
       "fieldConfig": {
         "defaults": {
@@ -448,8 +448,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -488,7 +487,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "process_cpu_seconds_total",
@@ -504,7 +503,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "adnwapqrtkuf4f"
+        "uid": "fdo587ddbn9q8b"
       },
       "fieldConfig": {
         "defaults": {
@@ -516,8 +515,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -556,7 +554,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "adnwapqrtkuf4f"
+            "uid": "fdo587ddbn9q8b"
           },
           "editorMode": "code",
           "expr": "process_virtual_memory_bytes",
@@ -587,6 +585,6 @@
   "timezone": "browser",
   "title": "mle-project-sprint-3",
   "uid": "cdnwczjz94jcwb",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
