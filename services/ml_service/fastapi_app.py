@@ -53,6 +53,9 @@ class FastAPIWrapper:
         router.add_api_route("/predict", self.get_prediction_for_item, methods=["POST"])
         self.app.include_router(router)
 
+    def get_app(self):
+        return self.app
+    
     def read_root(self):
         return {'message': 'Welcome from the FastAPI'}
     
@@ -98,4 +101,4 @@ class FastAPIWrapper:
         return response
 
 
-app = FastAPIWrapper().app
+app = FastAPIWrapper().get_app()
