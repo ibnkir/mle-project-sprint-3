@@ -162,6 +162,6 @@ cython_debug/
 #.idea/
 
 # KN modifications
-services/data/clean_data_full.csv
-#services/models/
+services/data/
+services/models/
 notebooks/catboost_info

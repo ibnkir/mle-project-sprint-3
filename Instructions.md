@@ -10,7 +10,7 @@
 - Загрузить файл `clean_data.csv` с исходными данными по [ссылке](https://disk.yandex.ru/d/OIInLdG4dZMVZA) и положить в папку `services/data/`. Эти данные понадобятся для генерации запросов.
 
 - Загрузить файл с обученной моделью `flats_prices_fitted.pkl` 
-по [ссылке](https://disk.yandex.ru/d/Ce6MX9OaWiyOKA) и положить в папку `services/models/`. 
+по [ссылке](https://disk.yandex.ru/d/Q_PgLOBbwxGoJA) и положить в папку `services/models/`. 
 Либо можно создать и обучить модель самостоятельно, выполнив все ячейки в ноутбуке 
 `notebooks/model_preparation.ipynb`. 
 
@@ -138,11 +138,7 @@
   ```
   python generate_requests.py
   ```
-  или
-  ```
-  python3 generate_requests.py
-  ``` 
-    
+      
 - Перейти на страницу сервиса Grafana по ссылке http://localhost:3000, 
 авторизоваться с логином и паролем, прописанными в файле `services/.env`.
 После этого в левой панели в разделе `Connections->Data sources` выбрать источник данных Prometheus,
