@@ -106,6 +106,7 @@ class FastApiHandler:
             print(self.err_msg)
             return False
                
+        
         # Проверяем, что типы значений соответствуют заданным и все числовые параметры положительны
         for k, v in model_params.items():
             # Проверяем типы значений
@@ -124,8 +125,9 @@ class FastApiHandler:
                 return False
             
         # Проверяем, что год постройки не превышает текущий год
-        if model_params['build_year'] > datetime.now().year:
-            self.err_msg = "Parameter build_year should be less or equal than current year"
+        if model_params['build_year'] > datetime.now().year or \
+            model_params['build_year'] < 1900:
+            self.err_msg = "Parameter build_year should be between 1900 and current year"
             print(self.err_msg)
             return False
         
@@ -185,6 +187,7 @@ class FastApiHandler:
                     'status': 'OK',
                     'score': y_pred 
                 }
+                print(response)
                     
         except Exception as e:
             return {
@@ -226,8 +229,7 @@ def main():
     # Обрабатываем тестовый запрос
     print('Processing request...')
     response = handler.handle(test_params)
-    print(f"Response: {response}")
-
+    
 
 if __name__ == "__main__":
     main()   

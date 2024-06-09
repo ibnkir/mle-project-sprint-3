@@ -49,9 +49,10 @@ for cnt, idx in enumerate(selected_inds):
     
     try:
         print(f"Sending correct request {cnt + 1}/{CORR_REQ_NUM}...")
-        response = requests.post(url='http://localhost:1702/predict', json=model_params_dict)  
-        response = response.json()
-        print(response)
+        requests.post(url='http://localhost:1702/predict', json=model_params_dict)  
+        #response = requests.post(url='http://localhost:1702/predict', json=model_params_dict)  
+        #response = response.json()
+        #print(response)
     except Exception as e:
         print(f'{e}')
         break
@@ -61,9 +62,10 @@ print()
 for cnt in range(ERR_REQ_NUM):
     try:
         print(f"Sending wrong request {cnt + 1}/{ERR_REQ_NUM}...")
-        response = requests.post(url='http://localhost:1702/predict', json={})  
-        response = response.json()
-        print(response)
+        requests.post(url='http://localhost:1702/predict', json={})  
+        #response = requests.post(url='http://localhost:1702/predict', json={})  
+        #response = response.json()
+        #print(response)
     except Exception as e:
         print(f'{e}')
         break
