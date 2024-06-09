@@ -163,5 +163,5 @@ cython_debug/
 
 # KN modifications
 services/data/
-services/models/
+#services/models/
 notebooks/catboost_info

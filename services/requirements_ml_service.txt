@@ -7,5 +7,5 @@ joblib>=1.2.0
 scikit-learn==1.4.0
 category-encoders==2.6.3
 autofeat==2.1.2
-catboost==1.2.2
+catboost==1.2.3
 
