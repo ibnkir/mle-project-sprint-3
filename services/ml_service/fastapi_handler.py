@@ -166,6 +166,7 @@ class FastApiHandler:
         Returns:
             - Словарь с результатами выполнения запроса.
         """
+        print('Processing request...')
         try:
             # Проверяем, была ли загружена модель
             if not self.pipeline:
@@ -186,15 +187,18 @@ class FastApiHandler:
                 response = {
                     'status': 'OK',
                     'score': y_pred 
-                }
-                print(response)
-                    
+                }    
+        
         except Exception as e:
-            return {
+            response = {
                 'status': 'Error',
                 'message': f'Problem with request, {e}'
             }
+            print(response)
+            return response
+        
         else:
+            print(response)
             return response
 
 
@@ -227,7 +231,6 @@ def main():
     handler = FastApiHandler(model_path)
 
     # Обрабатываем тестовый запрос
-    print('Processing request...')
     response = handler.handle(test_params)
     
 
