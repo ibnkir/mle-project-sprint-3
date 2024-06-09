@@ -138,6 +138,10 @@
   ```
   python generate_requests.py
   ```
+  или
+  ```
+  python3 generate_requests.py
+  ``` 
     
 - Перейти на страницу сервиса Grafana по ссылке http://localhost:3000, 
 авторизоваться с логином и паролем, прописанными в файле `services/.env`.
